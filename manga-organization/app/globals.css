@@ -31,3 +31,11 @@ body {
     text-wrap: balance;
   }
 }
+
+button{
+  background-color:red;
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  font-size: 20px;
+}
