@@ -2,10 +2,13 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import Series from './series.js';
 import './seriesList.css'
+import { title } from 'process';
 
 const MangaInfo = () => {
   const [mangaId, setMangaId] = useState('');
   const [mangaInfo, setMangaInfo] = useState(null);
+
+  const [mangaSeries, setMangaSeries] = useState([]);
 
   const handleChange = (event) => {
     setMangaId(event.target.value);
@@ -15,7 +18,8 @@ const MangaInfo = () => {
     event.preventDefault();
     try {
       const response = await axios.get(`https://api.jikan.moe/v4/manga/${mangaId}/full`);
-      setMangaInfo(response.data);
+      setMangaSeries(prevSeries => [...prevSeries, response.data]); 
+      setMangaId('');
     } catch (error) {
       console.error('Error fetching manga information:', error);
     }
@@ -31,7 +35,14 @@ const MangaInfo = () => {
         </label>
         <button type="submit">Fetch Info</button>
       </form>
-      {mangaInfo && <Series title={mangaInfo.data.title} synopsis={mangaInfo.data.synopsis} volumes={mangaInfo.data.volumes} />}
+      {mangaSeries.map(series=> (
+        <Series
+        key={series.data.mal_id}
+        title={series.data.title}
+        synopsis={series.data.synopsis}
+        volumes={series.data.volumes}
+        />
+      ))}
     </div>
   );
 };
