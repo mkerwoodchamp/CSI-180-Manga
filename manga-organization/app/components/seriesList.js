@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import Series from './series.js';
+import './seriesList.css'
 
 const MangaInfo = () => {
   const [mangaId, setMangaId] = useState('');
@@ -12,11 +14,7 @@ const MangaInfo = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.get('https://api.myanimelist.net/v2/manga/' + {mangaId} ,{
-        headers: {
-          Authorization: 'Bearer dcd6be7cec39f69648f7368b9328f468', 
-        },
-      });
+      const response = await axios.get(`https://api.jikan.moe/v4/manga/${mangaId}/full`);
       setMangaInfo(response.data);
     } catch (error) {
       console.error('Error fetching manga information:', error);
@@ -29,17 +27,11 @@ const MangaInfo = () => {
       <form onSubmit={handleSubmit}>
         <label>
           Manga ID:
-          <input type="text" value={mangaId} onChange={handleChange} />
+          <input className="search" type="text" value={mangaId} onChange={handleChange} />
         </label>
         <button type="submit">Fetch Info</button>
       </form>
-      {mangaInfo && (
-        <div>
-          <h3>{mangaInfo.data.attributes.title}</h3>
-          <p>Description: {mangaInfo.data.attributes.synopsis}</p>
-          <p>Volumes: {mangaInfo.data.attributes.volumeCount}</p>
-        </div>
-      )}
+      {mangaInfo && <Series title={mangaInfo.data.title} synopsis={mangaInfo.data.synopsis} volumes={mangaInfo.data.volumes} />}
     </div>
   );
 };

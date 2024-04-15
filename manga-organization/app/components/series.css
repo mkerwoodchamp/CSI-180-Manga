@@ -1,0 +1,27 @@
+.series{
+    border: 1px solid white;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;;
+}
+
+.center{
+    text-align: center;
+}
+
+.title{
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.button-container{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.button-row{
+    display: flex;
+    margin: 1px;
+}
