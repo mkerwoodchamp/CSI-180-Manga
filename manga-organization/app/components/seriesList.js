@@ -1,14 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Series from './series.js';
 import './seriesList.css'
-import { title } from 'process';
 
 const MangaInfo = () => {
   const [mangaId, setMangaId] = useState('');
-  const [mangaInfo, setMangaInfo] = useState(null);
-
   const [mangaSeries, setMangaSeries] = useState([]);
+
+  useEffect (() => {
+    const storedSeries = localStorage.getItem('mangaSeries');
+    if (storedSeries) {
+      setMangaSeries(JSON.parse(storedSeries));
+    }
+  }, []);
 
   const handleChange = (event) => {
     setMangaId(event.target.value);
@@ -18,8 +22,10 @@ const MangaInfo = () => {
     event.preventDefault();
     try {
       const response = await axios.get(`https://api.jikan.moe/v4/manga/${mangaId}/full`);
-      setMangaSeries(prevSeries => [...prevSeries, response.data]); 
+      const newSeries = response.data;
+      setMangaSeries(prevSeries => [...prevSeries, newSeries]); 
       setMangaId('');
+      localStorage.setItem('mangaSeries', JSON.stringify([...mangaSeries, newSeries]));
     } catch (error) {
       console.error('Error fetching manga information:', error);
     }
