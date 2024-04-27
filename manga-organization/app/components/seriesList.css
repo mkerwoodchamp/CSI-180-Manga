@@ -1,4 +1,15 @@
+.searchBox{
+    margin-bottom: 20px;
+}
+
 input{
     background-color: white;
     color:black;
+}
+
+.fetch {
+    font-size: 16px;
+    margin-left: 5px;
+    background-color: rgb(2, 20, 26);
+    color: white;
 }

@@ -18,6 +18,12 @@ const MangaInfo = () => {
     setMangaId(event.target.value);
   };
 
+  const removeSeries = (id) => {
+    const updateSeries = mangaSeries.filter((series) => series.data.mal_id!== id);
+    setMangaSeries(updateSeries);
+    localStorage.setItem('mangaSeries', JSON.stringify(updateSeries));
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -36,10 +42,10 @@ const MangaInfo = () => {
       <h2>Fetch Manga Information</h2>
       <form onSubmit={handleSubmit}>
         <label>
-          Manga ID:
+          Enter Manga ID:
           <input className="search" type="text" value={mangaId} onChange={handleChange} />
         </label>
-        <button type="submit">Fetch Info</button>
+        <button className="fetch" type="submit">Fetch Info</button>
       </form>
       {mangaSeries.map(series=> (
         <Series
@@ -47,6 +53,7 @@ const MangaInfo = () => {
         title={series.data.title}
         synopsis={series.data.synopsis}
         volumes={series.data.volumes}
+        onRemove={() => removeSeries(series.data.mal_id)}
         />
       ))}
     </div>
